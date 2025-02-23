@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 from repositories.user_repository import UserRepository
 from core.var_env import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
-from core.helpers_api import raise_no_authorized
+from core.helpers_api import raise_error_400
 from models.user_model import User
 from models.token_model import Token
 ALGORITHM = "HS256"
@@ -46,7 +46,7 @@ class AuthService():
   def generate_token(self, email: str, password: str) -> Token:
     user = self.authenticate_user(email, password)
     if not user:
-      raise_no_authorized()
+      raise_error_400('Usuario o contraseña incorrecto')
     token_str = self.create_access_token(
         data={'extra_data': {
             'email': user.email,
