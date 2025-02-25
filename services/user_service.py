@@ -24,11 +24,11 @@ class UserService():
     return entity
 
   def change_password(self, req_password: UserChangePassword, user: User):
-    if not self._auth_service.verify_password(req_password.oldPassword, user.password):
+    if not self._auth_service.verify_password(req_password.old_password, user.password):
       helpers_api.raise_error_422()
 
     new_hashed_password = self._auth_service.get_password_hash(
-        req_password.password)
+        req_password.new_password)
     user.change_password(new_hashed_password)
     self._repo.update_by_id(user)
     return

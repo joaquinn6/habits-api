@@ -7,6 +7,5 @@ class UserLogin(BaseModel):
 
 
 class UserChangePassword(BaseModel):
-  email: str = Field(...)
-  password: str = Field(...)
-  oldPassword: str = Field(...)
+  new_password: str = Field(...)
+  old_password: str = Field(...)
