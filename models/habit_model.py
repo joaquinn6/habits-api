@@ -25,6 +25,7 @@ class Habit(Entity):
   goals: GoalHabit | None = Field(default=None)
   user_id: str = Field(default=None)
   color: str = Field(default="")
+  icon: str = Field(default="")
 
   def new(self):
     self.initialize()
@@ -37,3 +38,4 @@ class Habit(Entity):
     self.goals = new_item.goals
     self.with_goals = new_item.with_goals
     self.color = new_item.color
+    self.icon = new_item.icon
