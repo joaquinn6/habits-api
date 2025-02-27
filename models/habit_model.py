@@ -5,8 +5,8 @@ from models.entity import Entity
 
 
 class TypeHabit(str, Enum):
-  bad = "BAD"
-  good = "GOOD"
+  BAD = "BAD"
+  GOOD = "GOOD"
 
 
 class GoalHabit(BaseModel):
