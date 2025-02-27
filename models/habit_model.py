@@ -10,6 +10,8 @@ class TypeHabit(str, Enum):
 
 
 class GoalHabit(BaseModel):
+  times: int = Field(...)
+  measure: str = Field(...)
   per_week: int = Field(...)
   per_month: int = Field(...)
   per_year: int = Field(...)
@@ -20,7 +22,7 @@ class Habit(Entity):
   description: str = Field(default="")
   type: TypeHabit = Field(...)
   with_goals: bool
-  goals: GoalHabit = Field(...)
+  goals: GoalHabit | None = Field(default=None)
   user_id: str = Field(default=None)
   color: str = Field(default="")
 

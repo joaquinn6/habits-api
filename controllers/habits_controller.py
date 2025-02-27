@@ -40,7 +40,7 @@ async def get_by_id(habit_id: str, token: HTTPAuthorizationCredentials = Depends
   AuthService().is_logged(token)
   entity = REPO.get_by_id(habit_id)
   if not entity:
-    helpers_api.raise_error_404('Habit')
+    helpers_api.raise_error_404('Habito')
   return entity.model_dump(by_alias=True)
 
 
