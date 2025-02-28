@@ -1,13 +1,12 @@
 """Routes y controllers de habitos"""
-from fastapi import APIRouter, Depends, Query, status, Body
+from fastapi import APIRouter, Depends, status, Body
 from fastapi.security import HTTPAuthorizationCredentials
+from pydantic import TypeAdapter
 from core import helpers_api
 from core.auth import AuthService, OptionalHTTPBearer
 from models.habit_model import Habit
 from services.habit_service import HabitService
 from repositories.habit_repository import HabitRepository
-from schemas.habit_schema import (HabitQuery, HabitListResponse)
-
 AUTH_SCHEME = OptionalHTTPBearer()
 REPO = HabitRepository()
 SERVICE = HabitService()
@@ -66,9 +65,8 @@ async def habit_update_by_id(
     status_code=status.HTTP_200_OK,
     summary="Get habits"
 )
-async def get_habits(query_params: HabitQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> HabitListResponse:
+async def get_habits(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Habit]:
+  data = AuthService().get_content_token(token)
   AuthService().is_logged(token)
-  query, pagination = SERVICE.get_query(query_params)
-  habits = HabitListResponse(
-      **helpers_api.get_paginator('habits', query, pagination))
-  return habits.model_dump(by_alias=True)
+  habits = SERVICE.get_habits_by_user(data['id'])
+  return [habit.model_dump(by_alias=True) for habit in habits]
