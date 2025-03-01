@@ -65,5 +65,5 @@ class RepositoryBase(Generic[T]):
   def delete_many(self, query):
     self._collection.delete_many(query)
 
-  def delete_by_id(self, identifier: ObjectId):
-    self._collection.delete_one({"_id": identifier})
+  def delete_by_id(self, identifier: str):
+    self._collection.delete_one({"_id": ObjectId(identifier)})

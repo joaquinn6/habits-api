@@ -1,7 +1,6 @@
 """Routes y controllers de habitos"""
 from fastapi import APIRouter, Depends, status, Body
 from fastapi.security import HTTPAuthorizationCredentials
-from pydantic import TypeAdapter
 from core import helpers_api
 from core.auth import AuthService, OptionalHTTPBearer
 from models.habit_model import Habit
@@ -58,6 +57,19 @@ async def habit_update_by_id(
     helpers_api.raise_error_404('Habit')
   update_habit = SERVICE.update_habit(entity, habit)
   return str(update_habit.id)
+
+
+@router.delete(
+    "/habits/{habit_id}",
+    status_code=status.HTTP_200_OK,
+    summary="Update habit by id"
+)
+async def habit_delete_by_id(
+        habit_id: str,
+        token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> str:
+  AuthService().is_logged(token)
+  SERVICE.delete_habit(habit_id)
+  return habit_id
 
 
 @router.get(
