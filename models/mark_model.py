@@ -6,8 +6,8 @@ from models.entity import Entity
 
 class Mark(Entity):
   date: datetime = Field(...)
-  times: int = Field(default="")
-  habit_id: str = Field(...)
+  times: int = Field(default=1)
+  habit_id: str = Field(default="")
   note: str = Field(default="")
 
   def new(self):

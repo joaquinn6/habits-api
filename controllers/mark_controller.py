@@ -18,11 +18,16 @@ router = APIRouter(
 
 
 @router.post(
-    "/marks",
+    "/habits/{habit_id}/marks",
     status_code=status.HTTP_201_CREATED,
     summary="Create a new mark"
 )
-async def create(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME), mark: Mark = Body(...)) -> str:
+async def create(
+        habit_id: str,
+        token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME),
+        mark: Mark = Body(...)) -> str:
+  AuthService().is_logged(token)
+  mark.habit_id = habit_id
   mark = SERVICE.create_mark(mark)
   return str(mark.id)
 
@@ -55,6 +60,20 @@ async def mark_update_by_id(
     helpers_api.raise_error_404('Mark')
   update_mark = SERVICE.update_mark(entity, mark)
   return str(update_mark.id)
+
+# TODO> los gets de las marcas como se debe
+
+
+@router.get(
+    "/habits/{habit_id}/marks",
+    status_code=status.HTTP_200_OK,
+    summary="Get marks"
+)
+async def get_marks_by_habit(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
+  data = AuthService().get_content_token(token)
+  AuthService().is_logged(token)
+  marks = SERVICE.get_marks_by_habit(data['id'])
+  return [mark.model_dump(by_alias=True) for mark in marks]
 
 
 @router.get(
