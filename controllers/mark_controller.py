@@ -61,8 +61,6 @@ async def mark_update_by_id(
   update_mark = SERVICE.update_mark(entity, mark)
   return str(update_mark.id)
 
-# TODO> los gets de las marcas como se debe
-
 
 @router.get(
     "/habits/{habit_id}/marks",
@@ -81,6 +79,7 @@ async def get_marks_by_habit(token: HTTPAuthorizationCredentials = Depends(AUTH_
     status_code=status.HTTP_200_OK,
     summary="Get marks"
 )
+# TODO> los get  marcas por usuario
 async def get_marks(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
   data = AuthService().get_content_token(token)
   AuthService().is_logged(token)
