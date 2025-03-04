@@ -67,10 +67,10 @@ async def mark_update_by_id(
     status_code=status.HTTP_200_OK,
     summary="Get marks"
 )
-async def get_marks_by_habit(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
+async def get_marks_by_habit(habit_id: str, token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
   data = AuthService().get_content_token(token)
   AuthService().is_logged(token)
-  marks = SERVICE.get_marks_by_habit(data['id'])
+  marks = SERVICE.get_marks_by_habit(habit_id)
   return [mark.model_dump(by_alias=True) for mark in marks]
 
 
