@@ -15,9 +15,3 @@ class MarkService():
     entity.update(mark)
     self._repo.update_by_id(entity)
     return entity
-
-  def get_marks_by_habit(self, id_habit: str) -> list[Mark]:
-    query = {
-        'habit_id': id_habit
-    }
-    return self._repo.get(query)

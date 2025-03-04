@@ -1,9 +1,10 @@
 """Routes y controllers de marks"""
-from fastapi import APIRouter, Depends, status, Body
+from fastapi import APIRouter, Depends, Query, status, Body
 from fastapi.security import HTTPAuthorizationCredentials
 from core import helpers_api
 from core.auth import AuthService, OptionalHTTPBearer
 from models.mark_model import Mark
+from schemas.query_marks import MarkQuery
 from services.mark_service import MarkService
 from repositories.mark_repository import MarkRepository
 AUTH_SCHEME = OptionalHTTPBearer()
@@ -67,11 +68,10 @@ async def mark_update_by_id(
     status_code=status.HTTP_200_OK,
     summary="Get marks"
 )
-async def get_marks_by_habit(habit_id: str, token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
-  data = AuthService().get_content_token(token)
+async def get_marks_by_habit(habit_id: str,  query_params: MarkQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
   AuthService().is_logged(token)
-  marks = SERVICE.get_marks_by_habit(habit_id)
-  return [mark.model_dump(by_alias=True) for mark in marks]
+  marks = REPO.aggregate(query_params.to_pipeline(habit_id))
+  return marks
 
 
 @router.get(
@@ -83,5 +83,5 @@ async def get_marks_by_habit(habit_id: str, token: HTTPAuthorizationCredentials 
 async def get_marks(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
   data = AuthService().get_content_token(token)
   AuthService().is_logged(token)
-  marks = SERVICE.get_marks_by_habit(data['id'])
-  return [mark.model_dump(by_alias=True) for mark in marks]
+  # marks = SERVICE.get_marks_by_habit(data['id'])
+  # return [mark.model_dump(by_alias=True) for mark in marks]

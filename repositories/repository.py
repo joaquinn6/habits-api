@@ -67,3 +67,6 @@ class RepositoryBase(Generic[T]):
 
   def delete_by_id(self, identifier: str):
     self._collection.delete_one({"_id": ObjectId(identifier)})
+
+  def aggregate(self, pipeline: List) -> list | dict | None:
+    return self._collection.aggregate(pipeline)
