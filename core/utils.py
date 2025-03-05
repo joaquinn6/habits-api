@@ -1,5 +1,6 @@
 from datetime import datetime, date, time
 from calendar import monthrange
+from dateutil.relativedelta import relativedelta
 
 
 def range_of_date(year, month=0):
@@ -16,17 +17,22 @@ def range_of_date(year, month=0):
 
   if month != 0:
     # Obtener el primer y último día del month con horas
-    primer_dia_date = date(year, month, 1)
-    ultimo_dia_date = date(year, month, monthrange(year, month)[1])
+    first_day_date = date(year, month, 1) - relativedelta(months=1)
 
-    primer_dia = datetime.combine(primer_dia_date, time.min)  # 00:00:00
-    ultimo_dia = datetime.combine(ultimo_dia_date, time.max)  # 23:59:59
+    # Obtener el último día del mes siguiente
+    next_month = date(year, month, 1) + relativedelta(months=1)
+    last_day_date = date(next_month.year, next_month.month, monthrange(
+        next_month.year, next_month.month)[1])
+
+    # Combinar con horas
+    first_day = datetime.combine(first_day_date, time.min)
+    last_day = datetime.combine(last_day_date, time.max)
   else:
     # Obtener el primer y último día del año con horas
-    primer_dia_date = date(year, 1, 1)
-    ultimo_dia_date = date(year, 12, 31)
+    first_day_date = date(year, 1, 1)
+    last_day_date = date(year, 12, 31)
 
-    primer_dia = datetime.combine(primer_dia_date, time.min)  # 00:00:00
-    ultimo_dia = datetime.combine(ultimo_dia_date, time.max)  # 23:59:59
+    first_day = datetime.combine(first_day_date, time.min)
+    last_day = datetime.combine(last_day_date, time.max)
 
-  return primer_dia, ultimo_dia
+  return first_day, last_day

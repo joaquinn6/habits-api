@@ -39,7 +39,7 @@ class MarkQuery(BaseModel):
                   '$month': "$date"
               }
           },
-          'totalTimes': {
+          'times': {
               '$sum': "$times"
           }
       }})
@@ -47,17 +47,7 @@ class MarkQuery(BaseModel):
           '_id': 0,
           'year': "$_id.year",
           'month': "$_id.month",
-          'totalTimes': 1
+          'times': 1
       }})
 
-    if self.type == TypeHabit.MONTH:
-      pipeline.append({'$project': {
-          'day': {
-              '$dayOfMonth': "$date"
-          },
-          'times': 1,
-          '_id': 0
-      }
-
-      })
     return pipeline

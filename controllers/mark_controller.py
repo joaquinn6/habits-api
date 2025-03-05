@@ -1,4 +1,5 @@
 """Routes y controllers de marks"""
+from typing import List
 from fastapi import APIRouter, Depends, Query, status, Body
 from fastapi.security import HTTPAuthorizationCredentials
 from core import helpers_api
@@ -68,7 +69,7 @@ async def mark_update_by_id(
     status_code=status.HTTP_200_OK,
     summary="Get marks"
 )
-async def get_marks_by_habit(habit_id: str,  query_params: MarkQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> list[Mark]:
+async def get_marks_by_habit(habit_id: str,  query_params: MarkQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> List:
   AuthService().is_logged(token)
   marks = REPO.aggregate(query_params.to_pipeline(habit_id))
   return marks
