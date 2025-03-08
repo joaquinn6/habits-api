@@ -64,6 +64,19 @@ async def mark_update_by_id(
   return str(update_mark.id)
 
 
+@router.delete(
+    "/marks/{mark_id}",
+    status_code=status.HTTP_200_OK,
+    summary="Delete mark by id"
+)
+async def mark_delete_by_id(
+        mark_id: str,
+        token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> str:
+  AuthService().is_logged(token)
+  SERVICE.delete_mark(mark_id)
+  return str(mark_id)
+
+
 @router.get(
     "/habits/{habit_id}/marks",
     status_code=status.HTTP_200_OK,

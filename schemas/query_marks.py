@@ -53,7 +53,8 @@ class MarkQuery(BaseModel):
       pipeline.append({'$project': {
           '_id': {'$toString': '$_id'},
           'date': 1,
-          'times': 1
+          'times': 1,
+          'note': 1
       }})
 
     return pipeline

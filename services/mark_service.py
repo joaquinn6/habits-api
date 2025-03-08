@@ -15,3 +15,6 @@ class MarkService():
     entity.update(mark)
     self._repo.update_by_id(entity)
     return entity
+
+  def delete_mark(self, mark_id: str):
+    self._repo.delete_by_id(mark_id)
