@@ -13,11 +13,13 @@ class MarkQuery(BaseModel):
   type: TypeHabit = Field(default=None)
   month: int = Field(default=0)
   year: int = Field(default=0)
+  user: str = Field(default='')
+  habit: str = Field(default='')
 
-  def to_pipeline(self, habit: str = None):
+  def to_pipeline(self):
     query = {}
-    if habit:
-      query['habit_id'] = habit
+    if self.habit:
+      query['habit_id'] = self.habit
 
     if self.type:
       fist_date, end_date = range_of_date(self.year, self.month)
@@ -58,3 +60,50 @@ class MarkQuery(BaseModel):
       }})
 
     return pipeline
+
+
+"""
+[
+  {
+    $addFields: {
+      habit_id: {
+        $toObjectId: "$habit_id"
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "habits",
+      localField: "habit_id",
+      foreignField: "_id",
+      as: "habit"
+    }
+  },
+  {
+    $unwind: "$habit"
+  },
+  {
+    $match: {
+      "habit.user_id": "67bac0a2afe5a7b1ca9508c8"
+    }
+  },
+  {
+    $group: {
+      _id: "$date",
+      marks: {
+        $push: {
+          times: "$times",
+          habit_name: "$habit.name",
+          habit_emoji: "$habit.emoji"
+        }
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      date: "$_id",
+      marks: 1
+    }
+  }
+]"""

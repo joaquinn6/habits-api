@@ -47,6 +47,18 @@ async def get_by_id(mark_id: str, token: HTTPAuthorizationCredentials = Depends(
   return entity.model_dump(by_alias=True)
 
 
+@router.get(
+    "/marks",
+    status_code=status.HTTP_200_OK,
+    summary="Get mark by id"
+)
+async def get_by_user(query_params: MarkQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> List:
+  data = AuthService().get_content_token(token)
+  query_params.user = data['id']
+  marks = REPO.aggregate(query_params.to_pipeline())
+  return list(marks)
+
+
 @router.put(
     "/marks/{mark_id}",
     status_code=status.HTTP_200_OK,
@@ -84,7 +96,8 @@ async def mark_delete_by_id(
 )
 async def get_marks_by_habit(habit_id: str,  query_params: MarkQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> List:
   AuthService().is_logged(token)
-  marks = REPO.aggregate(query_params.to_pipeline(habit_id))
+  query_params.habit = habit_id
+  marks = REPO.aggregate(query_params.to_pipeline())
   return list(marks)
 
 
