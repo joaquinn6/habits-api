@@ -72,7 +72,7 @@ async def mark_update_by_id(
 async def get_marks_by_habit(habit_id: str,  query_params: MarkQuery = Query(...), token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> List:
   AuthService().is_logged(token)
   marks = REPO.aggregate(query_params.to_pipeline(habit_id))
-  return marks
+  return list(marks)
 
 
 @router.get(
