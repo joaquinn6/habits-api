@@ -18,7 +18,7 @@ class User(Entity):
   country: str = Field(default="", max_length=2)
   gender: Genders = Field(default="")
   birth_date: datetime = Field(...)
-  password: str = Field(..., max_length=30)
+  password: str = Field(...)
 
   def new(self):
     self.initialize()
