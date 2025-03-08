@@ -8,7 +8,7 @@ class Mark(Entity):
   date: datetime = Field(...)
   times: int = Field(default=1)
   habit_id: str = Field(default="")
-  note: str = Field(default="")
+  note: str = Field(default="", max_length=50)
 
   def new(self):
     self.initialize()

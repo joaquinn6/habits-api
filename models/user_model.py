@@ -1,18 +1,24 @@
 from datetime import datetime
+from enum import Enum
 from pydantic import Field
 
 from models.entity import Entity
 
 
+class Genders(str, Enum):
+  FEMALE = "FEMALE"
+  MALE = "MALE"
+
+
 class User(Entity):
   email: str = Field(...,
-                     pattern=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-  first_name: str = Field(...)
-  last_name: str = Field(default="")
-  country: str = Field(default="")
-  gender: str = Field(default="")
+                     pattern=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", max_length=80)
+  first_name: str = Field(..., max_length=40)
+  last_name: str = Field(default="", max_length=40)
+  country: str = Field(default="", max_length=2)
+  gender: Genders = Field(default="")
   birth_date: datetime = Field(...)
-  password: str = Field(...)
+  password: str = Field(..., max_length=30)
 
   def new(self):
     self.initialize()

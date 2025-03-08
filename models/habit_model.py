@@ -18,14 +18,14 @@ class GoalHabit(BaseModel):
 
 
 class Habit(Entity):
-  name: str = Field(...)
-  description: str = Field(default="")
+  name: str = Field(..., max_length=20)
+  description: str = Field(default="", max_length=40)
   type: TypeHabit = Field(...)
   with_goals: bool
   goals: GoalHabit | None = Field(default=None)
   user_id: str = Field(default=None)
   color: str = Field(default="")
-  emoji: str = Field(default="")
+  emoji: str = Field(default="", max_length=7)
 
   def new(self):
     self.initialize()
