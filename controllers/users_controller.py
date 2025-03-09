@@ -45,6 +45,17 @@ async def create(user: User = Body(...)) -> str:
   return str(new_user.id)
 
 
+@router.delete(
+    "/users",
+    status_code=status.HTTP_201_CREATED,
+    summary="Delete a user"
+)
+async def delete(token: HTTPAuthorizationCredentials = Depends(AUTH_SCHEME)) -> str:
+  data = AuthService().get_content_token(token)
+  SERVICE.delete_user(data['id'])
+  return data['id']
+
+
 @router.get(
     "/users/{user_id}",
     status_code=status.HTTP_200_OK,
