@@ -16,7 +16,7 @@ class User(Entity):
   first_name: str = Field(..., max_length=40)
   last_name: str = Field(default="", max_length=40)
   country: str = Field(default="", max_length=2)
-  gender: Genders = Field(default="")
+  gender: Genders | str = Field(default="")
   birth_date: datetime = Field(...)
   password: str = Field(...)
 
