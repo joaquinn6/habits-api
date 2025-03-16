@@ -40,9 +40,11 @@ async def change_password(user_id: str, token: HTTPAuthorizationCredentials = De
     status_code=status.HTTP_201_CREATED,
     summary="Create a new user"
 )
-async def create(user: User = Body(...)) -> str:
-  new_user = SERVICE.create_user(user)
-  return str(new_user.id)
+async def create(user: User = Body(...)) -> Token:
+  password = user.password
+  SERVICE.create_user(user)
+  token = AuthService().generate_token(user.email, password)
+  return token
 
 
 @router.delete(
