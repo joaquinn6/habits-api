@@ -64,7 +64,7 @@ class StatsQuery(BaseModel):
             {"$match": {"habit_id": self.habit, "date": {
                 "$gte": self.start_date, "$lt": self.end_date}}},
             {"$group": {"_id": {"year": {"$year": "$date"}, "week": {
-                "$isoWeek": "$date"}}, "total_times": {"$sum": "$times"}}},
+                "$week": "$date"}}, "total_times": {"$sum": "$times"}}},
             {"$project": {"week": "$_id.week", "total_times": 1, "_id": 0}}
         ]
     })
@@ -74,7 +74,7 @@ class StatsQuery(BaseModel):
                 "$gte": self.start_date, "$lt": self.end_date}}},
             {"$group": {"_id": {"$month": "$date"},
                         "total_times": {"$sum": "$times"}}},
-            {"$sort": {"_id": 1}}
+            {"$project": {"month": "$_id", "total_times": 1, "_id": 0}}
         ]
     })
     return pipelines
