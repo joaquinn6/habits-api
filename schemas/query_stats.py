@@ -1,18 +1,11 @@
 from datetime import datetime
-from enum import Enum
 from typing import List
 from pydantic import BaseModel, Field
 
 
-class TypeStats(str, Enum):
-  NONE = "NONE"
-  MONTH = "MONTH"
-  WEEK = "WEEK"
-
-
 class StatsQuery(BaseModel):
   habit: str = Field(default='')
-  type: TypeStats = Field(default=TypeStats.NONE.value)
+  with_goals: bool = Field(default=False)
   week: int = Field(default=0)
   month: int = Field(default=0)
   year: int = Field(default=0)
@@ -24,15 +17,11 @@ class StatsQuery(BaseModel):
     return datetime(datetime.now().year + 1, 1, 1, 0, 0, 0)
 
   def get_pipelines(self) -> list:
-    match (self.type):
-      case TypeStats.NONE.value:
-        return self.pipelines_by_none()
-      case TypeStats.WEEK.value:
-        return self.pipelines_by_week()
-      case TypeStats.MONTH.value:
-        return self.pipelines_by_month()
+    if self.with_goals:
+      return self.pipelines_with_goals()
+    return self.pipelines_no_goals()
 
-  def pipelines_by_none(self) -> List:
+  def pipelines_no_goals(self) -> List:
     return [
         {"name": "totalByYear", "pipeline": [
             {"$match": {"habit_id": self.habit, "date": {
@@ -68,8 +57,8 @@ class StatsQuery(BaseModel):
         ]}
     ]
 
-  def pipelines_by_week(self) -> List:
-    pipelines = self.pipelines_by_none()
+  def pipelines_with_goals(self) -> List:
+    pipelines = self.pipelines_no_goals()
     pipelines.append({
         "name": "groupByWeek", "pipeline": [
             {"$match": {"habit_id": self.habit, "date": {
@@ -79,10 +68,6 @@ class StatsQuery(BaseModel):
             {"$project": {"week": "$_id.week", "total_times": 1, "_id": 0}}
         ]
     })
-    return pipelines
-
-  def pipelines_by_month(self) -> List:
-    pipelines = self.pipelines_by_none()
     pipelines.append({
         "name": "groupByMonth", "pipeline": [
             {"$match": {"habit_id": self.habit, "date": {

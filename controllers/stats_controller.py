@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, Depends, Query, status
 from fastapi.security import HTTPAuthorizationCredentials
 from core.auth import AuthService, OptionalHTTPBearer
