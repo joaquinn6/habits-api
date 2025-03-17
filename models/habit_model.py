@@ -9,9 +9,15 @@ class TypeHabit(str, Enum):
   GOOD = "GOOD"
 
 
+class TypeMeasures(str, Enum):
+  MONTH = "MONTH"
+  WEEK = "WEEK"
+  YEAR = "YEAR"
+
+
 class GoalHabit(BaseModel):
   times: int = Field(...)
-  measure: str = Field(...)
+  measure: TypeMeasures = Field(...)
   per_week: int = Field(...)
   per_month: int = Field(...)
   per_year: int = Field(...)
