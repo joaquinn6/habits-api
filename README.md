@@ -10,7 +10,7 @@
 
 Esta es una API RESTful construida con **FastAPI** que forma parte de un sistema de gestión de hábitos. La API permite a los usuarios crear, leer, actualizar y eliminar hábitos, así como gestionar las metas asociadas a estos hábitos, mostrando estadísticas de los hábitos registrados.
 
-La API está diseñada para integrarse con una aplicación frontend construida con **React**, que permite a los usuarios realizar peticiones para gestionar sus hábitos y metas de manera intuitiva. ([🔗 Ver repositorio](https://https://github.com/joaquinn6/habits-app))
+La API está diseñada para integrarse con una aplicación frontend construida con **React**, que permite a los usuarios realizar peticiones para gestionar sus hábitos y metas de manera intuitiva. ([🔗 Ver repositorio](https://github.com/joaquinn6/habits-app))
 
 
 _¡Este proyecto no es solo una carta de presentación, sino una muestra real de mis habilidades como desarrollador full-stack!_  
@@ -19,7 +19,7 @@ _¡Este proyecto no es solo una carta de presentación, sino una muestra real de
 
 This is a RESTful API built with **FastAPI** that is part of a habit management system. The API allows users to create, read, update, and delete habits, as well as manage the goals associated with these habits, displaying statistics of the registered habits.
 
-The API is designed to integrate with a frontend application built with **React**, which allows users to make requests to manage their habits and goals intuitively. ([🔗View repository](https://https://github.com/joaquinn6/habits-app)).
+The API is designed to integrate with a frontend application built with **React**, which allows users to make requests to manage their habits and goals intuitively. ([🔗View repository](https://github.com/joaquinn6/habits-app)).
 
 _This project is not just a presentation letter, but a real showcase of my skills as a full-stack developer!_  
 
