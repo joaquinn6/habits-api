@@ -55,6 +55,7 @@ _This project is not just a presentation letter, but a real showcase of my skill
 - FastAPI  
 - MongoDB  
 - Pydantic
+- Docker
 
 ### **Despliegue | Deployment:**
 - Render  
